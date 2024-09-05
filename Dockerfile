@@ -1,0 +1,5 @@
+ARG RUBY_VERSION=2.7.8
+
+FROM ruby:$RUBY_VERSION AS base
+
+WORKDIR /app
