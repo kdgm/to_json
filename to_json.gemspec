@@ -8,7 +8,6 @@ Gem::Specification.new do |spec|
   spec.name          = "to_json"
   spec.version       = ::ToJson::VERSION
   spec.authors       = ["Andrew Hacking"]
-  spec.date          = Date.today.to_s
   spec.email         = ["ahacking@gmail.com"]
   spec.homepage      = "https://github.com/ahacking/to_json"
   spec.summary       = %q{A pragmatic DSL for fast JSON serialization}
