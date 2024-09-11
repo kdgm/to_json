@@ -12,12 +12,12 @@ module ToJson
     end
 
     module ClassMethods
-      def encode!(*args, &block)
-        new.encode!(*args, &block)
+      def encode!(*args, **kwargs, &block)
+        new.encode!(*args, **kwargs, &block)
       end
 
-      def json!(*args, &block)
-        new.json!(*args, &block)
+      def json!(*args, **kwargs, &block)
+        new.json!(*args, **kwargs, &block)
       end
     end
 
@@ -25,12 +25,12 @@ module ToJson
     # instance methods
     #
 
-    def json!(*args, &block)
-      encode!(*args, &block)
+    def json!(*args, **kwargs, &block)
+      encode!(*args, **kwargs, &block)
       to_json
     end
 
-    def encode!(*args, &block)
+    def encode!(*args, **kwargs, &block)
       @_scope = args[0]
       @_obj_depth = 0
       if @_oj
@@ -38,16 +38,16 @@ module ToJson
       else
         @_oj = Oj::StringWriter.new(:mode => :compat)
       end
-      serialize(*args, &block)
+      serialize(*args, **kwargs, &block)
       @_oj.pop_all
       self
     end
 
-    def serialize(*args, &block)
+    def serialize(*args, **kwargs, &block)
       # the following line gets the callers 'self' so we can copy instance vars and delegate to it
       @_scope = ::Kernel.eval 'self', block.binding
       _copy_ivars @_scope
-      instance_exec(*args, &block)
+      instance_exec(*args, **kwargs, &block)
     end
 
     def to_json
@@ -277,9 +277,9 @@ module ToJson
       @_key = nil                                           # ensure key is cleared
     end
 
-    def method_missing(method, *args, &block)
+    def method_missing(method, *args, **kwargs, &block)
       # delegate to the scope
-      @_scope.send method, *args, &block
+      @_scope.send method, *args, **kwargs, &block
     end
 
     def const_missing(name)
