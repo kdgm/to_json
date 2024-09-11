@@ -1,0 +1,36 @@
+version: '7.3'
+
+compose:
+  files:
+    - docker-compose.yml
+
+interaction:
+  sh:
+    description: Open a Bash shell within a Rails container (with dependencies up)
+    service: app
+    command: /bin/bash
+
+  bundle:
+    description: Run Bundler commands
+    service: app
+    command: bundle
+    compose_run_options: [no-deps]
+
+  rake:
+    description: Run Rake commands
+    service: app
+    command: bundle exec rake
+
+provision:
+  # # Remove old containers and volumes.
+  - dip compose down --volumes --remove-orphans
+  - docker volume create <%= ENV.fetch('COMPOSE_PROJECT_NAME', 'to_json') %>-history
+
+  # Create mount points for specific directories.
+  - mkdir -p tmp
+
+  # Build the development container
+  - dip compose build
+
+  # Install gems
+  - dip bundle install

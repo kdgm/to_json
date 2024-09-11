@@ -165,7 +165,7 @@ Some alternatives to ToJson and primary diferences.
 ### ToJson vs JSONBuilder
  + JSONBuilder is very slow (but not as slow as Jsonify)
  + DSL relys on method_missing for JSON attribute names
- 
+
 ### ToJson vs Jsonify
  + Jsonify is the slowest JSON serialization option I am aware of
  + DSL relys on method_missing for the JSON attribute names
@@ -197,6 +197,23 @@ ToJson (block) - simple    5.190000   0.000000   5.190000 (  5.191536)
 ToJson (block) - complex   9.390000   0.000000   9.390000 (  9.390543)
 Jbuilder - simple          6.180000   0.000000   6.180000 (  6.182140)
 Jbuilder - complex        22.600000   2.240000  24.840000 ( 24.861366)
+```
+
+Ruby 2.7.8
+
+```
+Serialize 500,000 objects separately:
+                          user     system      total        real
+ToJson (class) - simple   0.990960   0.000810   0.991770 (  0.991792)
+ToJson (class) - parallel 0.001599   0.017075  37.137801 (  2.362301)
+(8000000 ops)
+ToJson (class) - complex  7.461308   0.002083   7.463391 (  7.464256)
+ToJson (block) - simple   3.501560   0.000000   3.501560 (  3.501646)
+ToJson (block) - complex 10.815699   0.000428  10.816127 ( 10.816804)
+Jbuilder       - simple   5.677831   0.001979   5.679810 (  5.682258)
+Jbuilder       - complex 23.310981   0.001866  23.312847 ( 23.316103)
+JSONBuilder    - complex 28.786932   0.002175  28.789107 ( 28.796768)
+jsonify        - complex 48.479856   0.006111  48.485967 ( 48.503229)
 ```
 
 The real time used is the important figure. As can be seen ToJson using a

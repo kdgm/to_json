@@ -1,0 +1,24 @@
+services:
+  app:
+    environment:
+      HISTFILE: /usr/local/hist/.bash_history
+      IRB_HISTFILE: /usr/local/hist/.irb_history
+      EDITOR: vi
+
+    build:
+      context: .
+      args:
+        RUBY_VERSION: 2.7.8
+    command: bundle exec puma -p 5001 -t 1:5 -w 2
+    volumes:
+      - .:/app:cached
+      - bundle:/usr/local/bundle
+      - history:/usr/local/hist
+    tmpfs:
+      - /tmp
+
+volumes:
+  bundle:
+  history:
+    external: true
+    name: to_json-history
